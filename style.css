@@ -1,0 +1,56 @@
+/* Reset some default styles */
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for products */
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+/* Container for services */
+.service-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+/* Style for individual product/service */
+.product, .service {
+    flex: 0 0 calc(33.33% - 20px);
+    padding: 20px;
+    background-color: #f8f8f8;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Style for product/service image */
+.product img, .service img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* Style for product/service name */
+.product h2, .service h2 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+/* Style for product/service description */
+.product p, .service p {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* Style for product/service price */
+.product p:last-child, .service p:last-child {
+    font-size: 16px;
+    font-weight: bold;
+}
