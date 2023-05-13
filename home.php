@@ -26,49 +26,25 @@ $featured_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<header>
-    <div class="container">
-        <h1>Beauty Care Webshop</h1>
-        <nav>
-            <ul>
-                <li><a href="#">Men Care</a></li>
-                <li><a href="#">Women Care</a></li>
-                <li><a href="#">Contact Us</a></li>
-                <li><a href="#">Sign in</a></li>
-            </ul>
-        </nav>
+<?php
+require "navbar.php"
+?>
+
+<body>
+<div class="container">
+    <h1>Welcome to our Webshop</h1>
+    <div class="product-list">
+        <?php
+        foreach ($products as $product) {
+            $productPage = new ProductPage($product);
+            echo "<div class='product-item'>";
+            echo "<a href='product.php?productId=" . $product->getId() . "'>";
+            echo $productPage->render();
+            echo "</a>";
+            echo "</div>";
+        }
+        ?>
     </div>
-</header>
-
-<main>
-    <section class="hero">
-        <div class="container">
-            <h2>Find Your Perfect Beauty Products</h2>
-            <p>Shop our range of high-quality beauty products that cater to your every need.</p>
-            <a href="#" class="btn btn-primary">Shop Now</a>
-        </div>
-    </section>
-
-    <section class="featured-products">
-        <div class="container">
-            <h3>Featured Products</h3>
-            <div class="products">
-                <?php foreach ($featured_products as $product): ?>
-                    <div class="product">
-                        <img src="<?php echo $product['image']; ?>">
-                        <h4><?php echo $product['name']; ?></h4>
-                        <p><?php echo '$' . $product['price']; ?></p>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </section>
-</main>
-
-<footer>
-    <div class="container">
-        <p>&copy; 2023 Beauty Care Webshop</p>
-    </div>
-</footer>
+</div>
 </body>
 </html>
