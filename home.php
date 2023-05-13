@@ -1,45 +1,47 @@
-<?php
-// Connect to the database using PDO
-$servername = "localhost";
-$username = "root";
-$dbname = "I_care";
-
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
-}
-
-// Retrieve the featured products from the database
-$sql = "SELECT * FROM products WHERE featured = 1";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
-$featured_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Beauty Care Webshop</title>
+    <title>Webshop</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body>
-<?php
-require "navbar.php"
-?>
-
 <body>
 <div class="container">
     <h1>Welcome to our Webshop</h1>
     <div class="product-list">
         <?php
+        require_once 'Product.php';
+        require_once 'ProductRepo.php';
+
+        // Create a PDO connection to the MySQL database
+        $host = 'localhost';
+        $dbname = 'i_care';
+        $username = 'root';
+
+        $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ];
+
+        try {
+            $pdo = new PDO($dsn, $username, '', $options);
+        } catch (PDOException $e) {
+            throw new PDOException($e->getMessage(), (int)$e->getCode());
+        }
+
+        // Create an instance of the ProductRepository
+        $productRepository = new ProductRepository($pdo);
+
+        // Fetch products from the repository
+        $products = $productRepository->getAllProducts();
+
         foreach ($products as $product) {
-            $productPage = new ProductPage($product);
             echo "<div class='product-item'>";
-            echo "<a href='product.php?productId=" . $product->getId() . "'>";
-            echo $productPage->render();
+            echo "<a href='product.php?id=" . $product['id'] . "'>";
+            echo "<img src='images/" . $product['image'] . "' alt='" . $product['name'] . "'>";
+            echo "<h2>" . $product['name'] . "</h2>";
+            echo "<p>Price: $" . $product['price'] . "</p>";
             echo "</a>";
             echo "</div>";
         }
